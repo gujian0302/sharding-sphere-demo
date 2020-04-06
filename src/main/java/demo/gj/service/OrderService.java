@@ -18,7 +18,7 @@ public class OrderService {
     order.setId(id);
     order.setOrderId(orderId);
     order.setUserId(userId);
-    orderRepository.save(order);
+    orderRepository.insert(order);
   }
 
 }
