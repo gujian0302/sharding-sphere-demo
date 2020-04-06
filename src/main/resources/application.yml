@@ -1,0 +1,68 @@
+#https://shardingsphere.apache.org/document/current/en/manual/sharding-jdbc/configuration/config-spring-boot/
+spring:
+  shardingsphere:
+    datasource:
+      names: master0, master1, master0slave0, master1slave0
+#      , master1slave0, master1slave1
+      master0:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbcUrl: jdbc:mysql://localhost:3306/db0
+        username: root
+        password: 123456
+      master0slave0:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbcUrl: jdbc:mysql://localhost:3307/db0
+        username: root
+        password: 123456
+#      master0slave1:
+#        type: com.zaxxer.hikari.HikariDataSource
+#        driver-class-name: com.mysql.cj.jdbc.Driver
+#        jdbcUrl: jdbc:mysql://localhost:3306/db0
+#        username: root
+#        password: 123456
+      master1:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbcUrl: jdbc:mysql://localhost:3308/db1
+        username: root
+        password: 123456
+      master1slave0:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbcUrl: jdbc:mysql://localhost:3309/db1
+        username: root
+        password: 123456
+#      master1salve1:
+#        type: com.zaxxer.hikari.HikariDataSource
+#        driver-class-name: com.mysql.cj.jdbc.Driver
+#        jdbcUrl: jdbc:mysql://localhost:3308/db1
+#        username: root
+#        password: 123456
+    sharding:
+      tables:
+        t_order:
+          actual-data-nodes: ds$->{0..1}.t_order$->{0..1}
+          table-strategy:
+            inline:
+              sharding-column: order_id
+              algorithm-expression: t_order$->{ order_id % 2 }
+          database-strategy:
+            inline:
+              sharding-column: user_id
+              algorithm-expression: ds$->{ user_id % 2}
+      master-slave-rules:
+        ds0:
+          master-data-source-name: master0
+          slave-data-source-names: master0slave0
+        ds1:
+          master-data-source-name: master1
+          slave-data-source-names: master1slave0
+    props:
+      sql:
+        show: true
+  jpa:
+    hibernate:
+      ddl-auto: create
+
