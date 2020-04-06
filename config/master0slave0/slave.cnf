@@ -1,0 +1,6 @@
+[mysqld]
+server-id=2
+log-bin=mysql2-bin
+log-slave-updates=1
+datadir=/var/lib/mysql
+read-only=1

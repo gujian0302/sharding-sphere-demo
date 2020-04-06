@@ -1,0 +1,48 @@
+version: '3'
+services:
+  master0:
+    container_name: master0
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: db0
+    volumes:
+      - './data/master0:/var/lib/mysql/'
+      - './config/master0/:/etc/mysql/conf.d'
+    ports:
+      - 3306:3306
+    # command: mysql -u root -p123456 < /etc/repl.sql
+  master0slave0:
+    container_name: master0slave0
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: db0
+    volumes:
+      - './data/master0slave0:/var/lib/mysql'
+      - './config/master0slave0:/etc/mysql/conf.d'
+    ports:
+      - 3307:3306
+    # command: mysql -u root -p123456 < /etc/repl.sql
+  master1:
+    container_name: master1
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: db1
+    volumes:
+      - './data/master1:/var/lib/mysql/'
+      - './config/master1:/etc/mysql/conf.d'
+    ports:
+      - 3308:3306
+  master1slave0:
+    container_name: master1slave0
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: db1
+    volumes:
+      - './data/master1slave0:/var/lib/mysql'
+      - './config/master1slave0:/etc/mysql/conf.d'
+    ports:
+      - 3309:3306
