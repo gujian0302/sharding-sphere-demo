@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
 import lombok.ToString;
+import org.springframework.data.domain.Persistable;
 import sun.tools.jconsole.ProxyClient.SnapshotMBeanServerConnection;
 
 /**
@@ -18,7 +19,7 @@ import sun.tools.jconsole.ProxyClient.SnapshotMBeanServerConnection;
 @Entity
 @Table(name = "t_order")
 @TableName(value = "t_order", autoResultMap = true)
-public class OrderDO {
+public class OrderDO implements Persistable<Long> {
 
   @Id
   @Column(name = "id")
@@ -38,4 +39,9 @@ public class OrderDO {
   @Column(name = "user_id")
   @TableField("user_id")
   private Long userId;
+
+  @Override
+  public boolean isNew() {
+    return true;
+  }
 }
